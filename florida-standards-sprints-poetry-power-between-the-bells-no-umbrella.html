@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Florida Standards Sprints | Poetry Power Lab</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+:root{--blue:#2563eb;--navy:#173b7a;--sky:#68b8ff;--yellow:#f7c948;--pink:#ff7aa2;--purple:#7c5cff;--aqua:#35c4c9;--green:#25a66b;--orange:#ff934f;--ink:#1f2937;--muted:#6b7280;--good:#13795b;--bad:#b42318;--shadow:0 12px 30px rgba(20,43,79,.12)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);line-height:1.5;background:linear-gradient(180deg,#f7fbff,#fffaf3)}
+header{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,#10366f,#2563eb 58%,#68b8ff);color:#fff;border-bottom:5px solid var(--yellow);padding:16px 18px;box-shadow:0 5px 18px rgba(0,0,0,.14)}
+.top{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:18px}.brand{display:flex;align-items:center;gap:12px}.logo{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:var(--yellow);border:3px solid #fff;font-size:27px}.brand h1{margin:0;font-size:18px}.brand p{margin:2px 0 0;font-size:12px}.runner{display:inline-block;transform:scaleX(-1)}
+.progress{min-width:180px}.plabel{font-size:12px;text-align:right}.track{height:10px;background:rgba(255,255,255,.3);border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:var(--yellow);transition:.3s}
+main{max-width:1100px;margin:auto;padding:28px 18px 60px}.hero,.card,.report{background:#fff;border:1px solid #e1e9f4;border-radius:24px;box-shadow:var(--shadow)}.hero{padding:30px;position:relative;overflow:hidden}.hero:after{content:"📖";position:absolute;right:30px;top:12px;font-size:96px;opacity:.07}.eyebrow{display:inline-block;background:#eaf2ff;color:var(--navy);padding:7px 11px;border-radius:999px;font-size:12px;font-weight:900}.hero h2{font-size:38px;line-height:1.05;color:#142b4f;margin:14px 0 8px}.hero p{max-width:820px;font-size:17px;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.chip{background:#f6f9fd;border:1px solid #d9e4f2;border-radius:999px;padding:8px 11px;font-size:13px;font-weight:800;color:#142b4f}.goals{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:18px}.goal{border-radius:16px;padding:16px 18px}.bench{background:#eef5ff;border-left:6px solid var(--blue)}.ican{background:#fff6cf;border-left:6px solid var(--yellow)}.goal b{color:#142b4f}.goal p{margin:5px 0 0}
+.card{margin-top:24px;padding:24px}.head{display:flex;align-items:center;gap:11px}.icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:#fff;font-weight:900}.c1{background:var(--aqua)}.c2{background:var(--purple)}.c3{background:var(--pink)}.c4{background:var(--orange)}.c5{background:var(--green)}.c6{background:var(--blue)}.card h3{margin:0;color:#142b4f;font-size:24px}.intro{color:var(--muted);margin:6px 0 18px}
+.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.tool{padding:13px;border-radius:14px;border:1px solid #dce7f4;background:#fbfdff}.tool strong{display:block;color:var(--navy)}.tool span{font-size:12.5px;color:var(--muted)}.tip{margin-top:16px;background:#eef5ff;border-left:6px solid var(--blue);border-radius:14px;padding:15px}
+.poem{max-width:760px;margin:14px auto;background:linear-gradient(135deg,#f7fbff,#fffaf2);border:1px solid #dce6f2;border-radius:18px;padding:20px}.poem h4{text-align:center;color:#142b4f;font-size:23px;margin:0 0 14px}.stanza{margin:0 0 16px;padding-left:14px;border-left:4px solid #c9d9ee}.stanza:last-child{margin-bottom:0}.line{display:block}
+.q{border:1px solid #dfe7f1;border-radius:18px;padding:18px;margin:15px 0;background:#fff}.qnum{color:var(--blue);font-size:12px;font-weight:900;text-transform:uppercase}.q h4{font-size:18px;color:#142b4f;margin:5px 0 12px}.context{background:#f8fafc;border-left:4px solid #abc4e8;border-radius:10px;padding:12px;margin:9px 0 12px}.choices{display:grid;gap:9px}.choice{width:100%;text-align:left;border:2px solid #dbe6f0;background:#fff;padding:12px 14px;border-radius:12px;font-size:15px;cursor:pointer}.choice:hover{border-color:var(--blue)}.choice.correct{border-color:var(--good);background:#eaf9f2}.choice.incorrect{border-color:var(--bad);background:#fff0ef}.feedback{display:none;margin-top:10px;padding:11px 13px;border-radius:10px;font-weight:700}.feedback.show{display:block}.good{background:#e9f9f1;color:var(--good)}.bad{background:#fff0ef;color:var(--bad)}
+.practice{display:grid;grid-template-columns:1fr 1fr;gap:14px}.mini{background:#f8fafc;border:1px solid #dfe7f1;border-radius:15px;padding:14px}select,input,textarea{width:100%;padding:11px;border:1px solid #cfdbe8;border-radius:10px;font:inherit;background:#fff}textarea{min-height:90px;resize:vertical}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}button.primary,button.secondary{border:none;border-radius:12px;padding:12px 18px;font-size:15px;font-weight:900;cursor:pointer}.primary{background:var(--blue);color:#fff}.secondary{background:var(--yellow);color:#142b4f}.saved{display:none;margin-top:10px;padding:10px 12px;background:#e9f9f1;color:var(--good);border-radius:10px;font-weight:700}.saved.show{display:block}
+.quizbanner{background:linear-gradient(135deg,#142b4f,#2563eb);color:#fff;border-radius:18px;padding:18px;margin-bottom:18px}.quizbanner h4{font-size:22px;margin:0 0 5px}.quizbanner p{margin:0}.report{display:none;margin-top:24px;padding:24px;border:2px solid var(--blue)}.report.show{display:block}.badge{display:inline-block;background:var(--yellow);color:#142b4f;font-weight:900;border-radius:999px;padding:8px 12px}.score{font-size:50px;color:var(--navy);font-weight:900;margin:8px 0}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{border:1px solid #dce6f2;border-radius:14px;padding:14px;text-align:center}.metric strong{display:block;font-size:22px;color:#142b4f}.note{margin-top:18px;padding:15px;border-radius:12px;background:#fff7d9;border-left:6px solid var(--yellow)}.tiny{font-size:12px;color:var(--muted)}footer{text-align:center;color:var(--muted);font-size:12px;padding:30px 18px 42px}
+@media(max-width:860px){.goals,.practice,.metrics{grid-template-columns:1fr}.tools{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){.tools{grid-template-columns:1fr}.hero,.card{padding:18px}.hero h2{font-size:29px}.progress{min-width:110px}}@media print{header,.actions{display:none!important}body{background:#fff}.hero,.card,.report{box-shadow:none}.report{display:block}}
+
+.dok{
+  display:inline-block;
+  margin-left:8px;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:900;
+  vertical-align:middle;
+}
+.dok1{background:#e6f7f1;color:#13795b}
+.dok2{background:#eef5ff;color:#2563eb}
+.dok3{background:#f4edff;color:#7048c8}
+
+.model{
+  margin:14px 0;
+  padding:15px 16px;
+  border-radius:15px;
+  background:linear-gradient(135deg,#f8fbff,#fff9e8);
+  border:1px solid #dce6f2;
+}
+.model strong{color:#142b4f}
+.model .thinking{
+  margin-top:8px;
+  padding:10px 12px;
+  background:#fff;
+  border-radius:10px;
+  border-left:4px solid #f7c948;
+}
+.mission-map{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:18px;
+}
+.mission{
+  padding:12px;
+  border-radius:14px;
+  background:#f8fafc;
+  border:1px solid #dfe7f1;
+  font-size:13px;
+  font-weight:800;
+  color:#142b4f;
+}
+@media(max-width:760px){.mission-map{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<header><div class="top"><div class="brand"><div class="logo">🔍</div><div><h1>Florida Standards Sprints</h1><p>Learn it. Sprint it. Master it. <span class="runner">🏃</span></p></div></div><div class="progress"><div class="plabel"><span id="progressText">0%</span> complete</div><div class="track"><div class="bar" id="progressBar"></div></div></div></div></header>
+<main>
+<section class="hero"><span class="eyebrow">GRADE 6 • POETRY POWER</span><h2>Poetry Power Lab</h2><p>Move through six short skill missions. Each one teaches the skill, shows you how a strong reader thinks, and then lets you practice independently before the 10-question Mastery Sprint.</p><div class="chips"><span class="chip">ELA.6.R.1.2 • Theme</span><span class="chip">ELA.6.R.1.4 • Poetry</span><span class="chip">ELA.6.R.3.1 • Figurative Language</span><span class="chip">ELA.6.R.3.2 • Paraphrasing</span><span class="chip">ELA.6.V.1.3 • Context</span></div><div class="goals"><div class="goal bench"><b>📘 Florida B.E.S.T. Focus</b><p>Analyze theme, poetic structure, figurative language, tone and meaning; paraphrase grade-level text; and use context to determine word meaning.</p></div><div class="goal ican"><b>🎯 I Can</b><p><strong>I can analyze a poem's structure, devices, tone, mood, theme, vocabulary, and evidence to explain what the poem means.</strong></p></div></div>
+<div class="mission-map">
+  <div class="mission">🧱 Mission 1: Structure & Rhyme</div>
+  <div class="mission">🎨 Mission 2: Figurative Language</div>
+  <div class="mission">🎵 Mission 3: Sound Devices</div>
+  <div class="mission">🌤️ Mission 4: Tone & Mood</div>
+  <div class="mission">💡 Mission 5: Theme & Evidence</div>
+  <div class="mission">🔤 Mission 6: Context & Paraphrasing</div>
+</div></section>
+
+<section class="card"><div class="head"><div class="icon c1">1</div><h3>Poetry Toolbox 🧰</h3></div><p class="intro">Use this quick guide while you work.</p><div class="tools"><div class="tool"><strong>Line</strong><span>One row of words in a poem.</span></div><div class="tool"><strong>Stanza</strong><span>A group of lines, similar to a paragraph.</span></div><div class="tool"><strong>Rhyme</strong><span>Words with similar ending sounds.</span></div><div class="tool"><strong>Repetition</strong><span>Repeating words or sounds for emphasis.</span></div><div class="tool"><strong>Alliteration</strong><span>Repeating beginning consonant sounds.</span></div><div class="tool"><strong>Onomatopoeia</strong><span>A word that imitates a sound.</span></div><div class="tool"><strong>Simile</strong><span>A comparison using like or as.</span></div><div class="tool"><strong>Metaphor</strong><span>A comparison saying one thing is another.</span></div><div class="tool"><strong>Personification</strong><span>Human qualities given to nonhuman things.</span></div><div class="tool"><strong>Tone</strong><span>The speaker's or author's attitude.</span></div><div class="tool"><strong>Mood</strong><span>The feeling the reader gets.</span></div><div class="tool"><strong>Theme</strong><span>A message or lesson developed through the text.</span></div></div><div class="tip"><strong>FAST Reader Rule:</strong> FIND IT → THINK ABOUT IT → CONNECT IT.<br><strong>DEVICE → EFFECT → MEANING</strong></div></section>
+
+
+<section class="card">
+  <div class="head"><div class="icon c2">2</div><h3>Read the New Poem 🎒</h3></div>
+  <p class="intro">First read: What is happening? Second read: Notice structure, sounds, figurative language, mood changes, and the message.</p>
+
+  <div class="poem">
+    <h4>Between the Bells</h4>
+
+    <div class="stanza">
+      <span class="line">My locker coughs and clicks at eight,</span>
+      <span class="line">The hallway hums, a rushing stream.</span>
+      <span class="line">Backpacks bump and sneakers skate,</span>
+      <span class="line">I chase the tail of one more dream.</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">At lunch the room becomes a drum,</span>
+      <span class="line">Voices bounce from wall to wall.</span>
+      <span class="line">A friend's quick joke makes worry numb,</span>
+      <span class="line">And suddenly I stand up tall.</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">By afternoon, the clock crawls slow,</span>
+      <span class="line">A quiz sits waiting on my screen.</span>
+      <span class="line">I breathe in deep, then let it go,</span>
+      <span class="line">And find I'm braver than I seem.</span>
+    </div>
+
+    <div class="stanza">
+      <span class="line">The final bell rings bright and clear,</span>
+      <span class="line">We spill outside into the sun.</span>
+      <span class="line">Some days feel heavy while they're here,</span>
+      <span class="line">Then somehow, still, we get them done.</span>
+    </div>
+  </div>
+
+  <div class="tip"><strong>Reader Mission:</strong> This poem is about an ordinary school day, but the poet uses structure and poetic devices to show how pressure can change into confidence and relief.</div>
+</section>
+
+<section class="card">
+  <div class="head"><div class="icon c3">3</div><h3>Mission 1: Structure & Rhyme 🧱</h3></div>
+  <p class="intro"><strong>Teach It:</strong> Lines are grouped into stanzas. Poets use those groups to organize ideas, moments, and shifts.</p>
+
+  <div class="model">
+    <strong>Model It:</strong> Look at Stanza 1. It introduces the rushed beginning of the school day. Stanza 4 moves to the end of the day.
+    <div class="thinking"><strong>Strong-reader thinking:</strong> The stanzas help move the reader through different parts of the day, so the structure supports the poem's progression.</div>
+  </div>
+
+  <div class="q practice-q" data-q="p1" data-answer="c">
+    <div class="qnum">Try It 1 <span class="dok dok1">DOK 1</span></div>
+    <h4>How many stanzas are in “Between the Bells”?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. 2</button>
+      <button class="choice" data-choice="b">B. 3</button>
+      <button class="choice" data-choice="c">C. 4</button>
+      <button class="choice" data-choice="d">D. 16</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q practice-q" data-q="p2" data-answer="b">
+    <div class="qnum">Try It 2 <span class="dok dok2">DOK 2</span></div>
+    <h4>How does the four-stanza structure contribute to the poem?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. It introduces four unrelated speakers.</button>
+      <button class="choice" data-choice="b">B. It moves through parts of the school day and shows the speaker's changing experience.</button>
+      <button class="choice" data-choice="c">C. It proves every school poem must have four stanzas.</button>
+      <button class="choice" data-choice="d">D. It makes the poem sound like an informational article.</button>
+    </div><div class="feedback"></div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="head"><div class="icon c4">4</div><h3>Mission 2: Figurative Language 🎨</h3></div>
+  <p class="intro"><strong>Teach It:</strong> Figurative language creates pictures and feelings. A strong reader explains the effect, not just the device.</p>
+
+  <div class="model">
+    <strong>Model It:</strong> “At lunch the room becomes a drum.”
+    <div class="thinking"><strong>Think:</strong> This metaphor compares the lunchroom to a drum. It helps the reader imagine a loud, booming, energetic space.</div>
+  </div>
+
+  <div class="q practice-q" data-q="p3" data-answer="a">
+    <div class="qnum">Try It 3 <span class="dok dok1">DOK 1</span></div>
+    <div class="context">“The hallway hums, <strong>a rushing stream</strong>.”</div>
+    <h4>Which device is used in “a rushing stream”?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. Metaphor</button>
+      <button class="choice" data-choice="b">B. Simile</button>
+      <button class="choice" data-choice="c">C. Hyperbole</button>
+      <button class="choice" data-choice="d">D. Idiom</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q practice-q" data-q="p4" data-answer="d">
+    <div class="qnum">Try It 4 <span class="dok dok2">DOK 2</span></div>
+    <div class="context">“By afternoon, <strong>the clock crawls slow</strong>.”</div>
+    <h4>How does this personification contribute to meaning?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. It shows the clock is broken.</button>
+      <button class="choice" data-choice="b">B. It shows the speaker wants time to move even more slowly.</button>
+      <button class="choice" data-choice="c">C. It explains how clocks are built.</button>
+      <button class="choice" data-choice="d">D. It emphasizes that the afternoon feels slow because the speaker is waiting and worried.</button>
+    </div><div class="feedback"></div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="head"><div class="icon c5">5</div><h3>Mission 3: Sound Devices 🎵</h3></div>
+  <p class="intro"><strong>Teach It:</strong> Sound devices can make a poem energetic, memorable, or easier to hear in your imagination.</p>
+
+  <div class="model">
+    <strong>Model It:</strong> “Backpacks bump...”
+    <div class="thinking"><strong>Think:</strong> Repeating the beginning <em>b</em> sound is alliteration. The quick sound helps make the hallway feel busy and crowded.</div>
+  </div>
+
+  <div class="q practice-q" data-q="p5" data-answer="c">
+    <div class="qnum">Try It 5 <span class="dok dok1">DOK 1</span></div>
+    <div class="context">“<strong>Backpacks bump</strong> and sneakers skate.”</div>
+    <h4>Which sound device is used?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. Rhyme</button>
+      <button class="choice" data-choice="b">B. Onomatopoeia</button>
+      <button class="choice" data-choice="c">C. Alliteration</button>
+      <button class="choice" data-choice="d">D. Hyperbole</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q practice-q" data-q="p6" data-answer="a">
+    <div class="qnum">Try It 6 <span class="dok dok2">DOK 2</span></div>
+    <h4>What effect does the rhyme in pairs such as “eight/skate” and “stream/dream” have?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. It creates rhythm and gives the school-day scenes a steady flow.</button>
+      <button class="choice" data-choice="b">B. It changes the poem into a factual report.</button>
+      <button class="choice" data-choice="c">C. It tells the reader the exact time of each event.</button>
+      <button class="choice" data-choice="d">D. It proves every line has the same meaning.</button>
+    </div><div class="feedback"></div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="head"><div class="icon c6">6</div><h3>Mission 4: Tone & Mood 🌤️</h3></div>
+  <p class="intro"><strong>Teach It:</strong> Tone is the speaker's attitude. Mood is the feeling created for the reader. Both can shift.</p>
+
+  <div class="model">
+    <strong>Model It:</strong> The beginning feels rushed and pressured. By the end, the speaker sounds more confident and relieved.
+    <div class="thinking"><strong>Think:</strong> A shift in word choice often signals a shift in tone or mood.</div>
+  </div>
+
+  <div class="q practice-q" data-q="p7" data-answer="b">
+    <div class="qnum">Try It 7 <span class="dok dok2">DOK 2</span></div>
+    <h4>Which choice best describes the mood shift across the poem?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. Peaceful → frightening</button>
+      <button class="choice" data-choice="b">B. Busy and pressured → relieved and confident</button>
+      <button class="choice" data-choice="c">C. Joyful → angry</button>
+      <button class="choice" data-choice="d">D. Bored → confused</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q practice-q" data-q="p8" data-answer="c">
+    <div class="qnum">Try It 8 <span class="dok dok3">DOK 3</span></div>
+    <h4>Which two details work together best to show the change in the speaker's feelings?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. “at eight” and “at lunch”</button>
+      <button class="choice" data-choice="b">B. “wall to wall” and “screen”</button>
+      <button class="choice" data-choice="c">C. “A quiz sits waiting on my screen” and “And find I'm braver than I seem”</button>
+      <button class="choice" data-choice="d">D. “Backpacks bump” and “final bell”</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="practice">
+    <div class="mini"><strong>Beginning mood</strong><br><br>
+      <select id="moodStart">
+        <option value="">Choose...</option>
+        <option>busy / tense</option>
+        <option>peaceful</option>
+        <option>silly</option>
+        <option>lonely</option>
+      </select>
+    </div>
+    <div class="mini"><strong>Ending mood</strong><br><br>
+      <select id="moodEnd">
+        <option value="">Choose...</option>
+        <option>relieved / hopeful</option>
+        <option>angry</option>
+        <option>frightened</option>
+        <option>confused</option>
+      </select>
+    </div>
+  </div>
+  <div class="actions"><button class="primary" id="saveMood">Save Mood Practice</button></div>
+  <div class="saved" id="moodSaved">✅ Mood practice saved.</div>
+</section>
+
+<section class="card">
+  <div class="head"><div class="icon c2">7</div><h3>Mission 5: Theme & Evidence 💡</h3></div>
+  <p class="intro"><strong>Teach It:</strong> Theme is a complete message about life. Evidence shows how the poem develops that message.</p>
+
+  <div class="model">
+    <strong>Model It:</strong> The speaker has stressful moments but keeps moving through the day.
+    <div class="thinking"><strong>Possible message:</strong> Challenges can feel heavy in the moment, but we can handle more than we think—especially with support and persistence.</div>
+  </div>
+
+  <div class="q practice-q" data-q="p9" data-answer="d">
+    <div class="qnum">Try It 9 <span class="dok dok2">DOK 2</span></div>
+    <h4>Which statement best expresses a theme of “Between the Bells”?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. School should always be easy.</button>
+      <button class="choice" data-choice="b">B. Friends can solve every problem for us.</button>
+      <button class="choice" data-choice="c">C. The best part of school is leaving.</button>
+      <button class="choice" data-choice="d">D. Difficult moments can be managed, and we may be stronger than we realize.</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q practice-q" data-q="p10" data-answer="b">
+    <div class="qnum">Try It 10 <span class="dok dok3">DOK 3</span></div>
+    <h4>Which evidence best supports that theme?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. “My locker coughs and clicks at eight”</button>
+      <button class="choice" data-choice="b">B. “I breathe in deep, then let it go, / And find I'm braver than I seem.”</button>
+      <button class="choice" data-choice="c">C. “At lunch the room becomes a drum”</button>
+      <button class="choice" data-choice="d">D. “The final bell rings bright and clear”</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="practice">
+    <div class="mini"><strong>Write the theme in your own words.</strong><br><br>
+      <textarea id="themeResponse" placeholder="The poem teaches that..."></textarea>
+    </div>
+    <div class="mini"><strong>Use one line or detail as evidence.</strong><br><br>
+      <textarea id="themeEvidence" placeholder="One detail that supports this theme is..."></textarea>
+    </div>
+  </div>
+  <div class="actions"><button class="primary" id="saveTheme">Save Theme Practice</button></div>
+  <div class="saved" id="themeSaved">✅ Theme and evidence saved.</div>
+</section>
+
+<section class="card">
+  <div class="head"><div class="icon c3">8</div><h3>Mission 6: Context & Paraphrasing 🔤</h3></div>
+  <p class="intro"><strong>Teach It:</strong> Context clues help unlock word meaning. Paraphrasing means restating the author's idea accurately in your own words.</p>
+
+  <div class="model">
+    <strong>Model It:</strong> “A friend's quick joke makes worry numb.”
+    <div class="thinking"><strong>Think:</strong> The joke helps reduce the speaker's worry, so <em>numb</em> means the worry becomes less noticeable or less intense.</div>
+  </div>
+
+  <div class="q practice-q" data-q="p11" data-answer="c">
+    <div class="qnum">Try It 11 <span class="dok dok2">DOK 2</span></div>
+    <div class="context">“A friend's quick joke makes worry <strong>numb</strong>.”</div>
+    <h4>What does “numb” most likely mean in this line?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. louder</button>
+      <button class="choice" data-choice="b">B. more confusing</button>
+      <button class="choice" data-choice="c">C. less strongly felt</button>
+      <button class="choice" data-choice="d">D. physically frozen</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q practice-q" data-q="p12" data-answer="a">
+    <div class="qnum">Try It 12 <span class="dok dok2">DOK 2</span></div>
+    <div class="context">“Some days feel heavy while they're here, / Then somehow, still, we get them done.”</div>
+    <h4>Which paraphrase best keeps the meaning?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. Some days feel difficult, but we can still make it through them.</button>
+      <button class="choice" data-choice="b">B. Heavy objects make school difficult.</button>
+      <button class="choice" data-choice="c">C. Every school day feels exactly the same.</button>
+      <button class="choice" data-choice="d">D. Students should avoid difficult work.</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="mini"><strong>Now paraphrase these lines yourself:</strong><br>
+    “I breathe in deep, then let it go, / And find I'm braver than I seem.”<br><br>
+    <textarea id="paraphrase" placeholder="In my own words, these lines mean..."></textarea>
+  </div>
+  <div class="actions"><button class="primary" id="savePara">Save Paraphrase</button></div>
+  <div class="saved" id="paraSaved">✅ Paraphrase saved.</div>
+</section>
+
+<section class="card">
+  <div class="head"><div class="icon c4">9</div><h3>Mastery Sprint 🏁</h3></div>
+  <div class="quizbanner"><h4>10-Question Final Quiz</h4><p>Work independently. Questions move from DOK 1 recognition to DOK 3 analysis.</p></div>
+
+  <div class="q quiz-q" data-q="q1" data-answer="b">
+    <div class="qnum">Quiz 1 <span class="dok dok1">DOK 1</span></div>
+    <h4>What is a stanza?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. One word repeated in a poem</button>
+      <button class="choice" data-choice="b">B. A group of lines in a poem</button>
+      <button class="choice" data-choice="c">C. The title of a poem</button>
+      <button class="choice" data-choice="d">D. A comparison using like or as</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q quiz-q" data-q="q2" data-answer="a">
+    <div class="qnum">Quiz 2 <span class="dok dok1">DOK 1</span></div>
+    <div class="context">“At lunch the room becomes a drum.”</div>
+    <h4>Which device is used?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. Metaphor</button>
+      <button class="choice" data-choice="b">B. Simile</button>
+      <button class="choice" data-choice="c">C. Idiom</button>
+      <button class="choice" data-choice="d">D. Hyperbole</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q quiz-q" data-q="q3" data-answer="d">
+    <div class="qnum">Quiz 3 <span class="dok dok2">DOK 2</span></div>
+    <h4>What does the metaphor “the room becomes a drum” help the reader understand?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. Students are playing instruments.</button>
+      <button class="choice" data-choice="b">B. The lunchroom is empty.</button>
+      <button class="choice" data-choice="c">C. The speaker dislikes music.</button>
+      <button class="choice" data-choice="d">D. The lunchroom feels loud, energetic, and full of sound.</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q quiz-q" data-q="q4" data-answer="c">
+    <div class="qnum">Quiz 4 <span class="dok dok2">DOK 2</span></div>
+    <h4>Which pair of words from the poem rhymes?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. eight / stream</button>
+      <button class="choice" data-choice="b">B. drum / wall</button>
+      <button class="choice" data-choice="c">C. screen / seem</button>
+      <button class="choice" data-choice="d">D. clear / sun</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q quiz-q" data-q="q5" data-answer="b">
+    <div class="qnum">Quiz 5 <span class="dok dok2">DOK 2</span></div>
+    <div class="context">“My locker coughs and clicks at eight.”</div>
+    <h4>How does the personification affect the opening?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. It makes the locker seem peaceful.</button>
+      <button class="choice" data-choice="b">B. It makes the school setting feel noisy, active, and almost alive.</button>
+      <button class="choice" data-choice="c">C. It proves the locker is broken.</button>
+      <button class="choice" data-choice="d">D. It explains the locker combination.</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q quiz-q" data-q="q6" data-answer="a">
+    <div class="qnum">Quiz 6 <span class="dok dok3">DOK 3</span></div>
+    <h4>How does the poem's structure help develop its meaning?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. Each stanza moves through part of the day, helping show the speaker handling different pressures and ending with perspective.</button>
+      <button class="choice" data-choice="b">B. Each stanza gives instructions for surviving school.</button>
+      <button class="choice" data-choice="c">C. The stanzas show four different speakers who never meet.</button>
+      <button class="choice" data-choice="d">D. The structure is used only to make the poem look organized.</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q quiz-q" data-q="q7" data-answer="d">
+    <div class="qnum">Quiz 7 <span class="dok dok2">DOK 2</span></div>
+    <h4>Which choice best describes the tone near the end of the poem?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. bitter and angry</button>
+      <button class="choice" data-choice="b">B. frightened and hopeless</button>
+      <button class="choice" data-choice="c">C. silly and careless</button>
+      <button class="choice" data-choice="d">D. reflective and quietly confident</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q quiz-q" data-q="q8" data-answer="c">
+    <div class="qnum">Quiz 8 <span class="dok dok2">DOK 2</span></div>
+    <div class="context">“A friend's quick joke makes worry numb.”</div>
+    <h4>Which meaning of “numb” fits the context?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. unable to move</button>
+      <button class="choice" data-choice="b">B. extremely loud</button>
+      <button class="choice" data-choice="c">C. less intense or less noticeable</button>
+      <button class="choice" data-choice="d">D. completely forgotten forever</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q quiz-q" data-q="q9" data-answer="b">
+    <div class="qnum">Quiz 9 <span class="dok dok3">DOK 3</span></div>
+    <h4>Which statement best expresses the theme?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. School is only enjoyable at the end of the day.</button>
+      <button class="choice" data-choice="b">B. Everyday challenges may feel difficult, but persistence and support can help us discover our own strength.</button>
+      <button class="choice" data-choice="c">C. Students should avoid quizzes when they feel nervous.</button>
+      <button class="choice" data-choice="d">D. Friends are more important than schoolwork.</button>
+    </div><div class="feedback"></div>
+  </div>
+
+  <div class="q quiz-q" data-q="q10" data-answer="a">
+    <div class="qnum">Quiz 10 <span class="dok dok3">DOK 3</span></div>
+    <h4>Which two parts of the poem best work together to develop that theme?</h4>
+    <div class="choices">
+      <button class="choice" data-choice="a">A. The nervous quiz moment and the realization “I'm braver than I seem”</button>
+      <button class="choice" data-choice="b">B. The locker clicking and the final bell ringing</button>
+      <button class="choice" data-choice="c">C. The lunchroom noise and the hallway movement</button>
+      <button class="choice" data-choice="d">D. The references to eight o'clock and afternoon</button>
+    </div><div class="feedback"></div>
+  </div>
+</section>
+
+<section class="card"><div class="head"><div class="icon c5">✓</div><h3>Finish & Download 📥</h3></div><p class="intro">Enter your name after completing all practice and the 10-question Mastery Sprint.</p><input id="studentName" type="text" placeholder="First and last name"><div class="actions"><button class="secondary" id="finishBtn">Finish My Tutorial</button></div></section>
+
+<section class="report" id="report"><span class="badge">POETRY POWER COMPLETE 🔍</span><h3>My Tutorial Report</h3><div class="score" id="scoreText">0%</div><p id="reportMessage"></p><div class="metrics"><div class="metric"><strong id="practiceMetric">0/12</strong>Practice Correct</div><div class="metric"><strong id="quizMetric">0/10</strong>Quiz Correct</div><div class="metric"><strong>Complete</strong>Status</div></div><div class="note"><strong>Student:</strong> <span id="studentDisplay">________________</span><br><strong>Skills:</strong> Structure, figurative language, sound devices, tone/mood, theme, context, paraphrasing<br><strong>Florida B.E.S.T.:</strong> ELA.6.R.1.2, ELA.6.R.1.4, ELA.6.R.3.1, ELA.6.R.3.2, ELA.6.V.1.3</div><div class="actions"><button class="primary" id="downloadBtn">Download Completed Work PDF</button><button class="primary" onclick="window.print()">Print / Save as PDF</button><button class="secondary" onclick="location.reload()">Try Again</button></div><p class="tiny">The PDF includes scores, question responses, correct answers, written work, and completion details.</p></section>
+</main>
+<footer>© 2026 Florida Standards Sprints • Interactive tutorial developed from the teacher-provided Poetry Power Practice skill sequence.<br>Independent educational resource. Not affiliated with or endorsed by the Florida Department of Education.</footer>
+<script>
+const all=[...document.querySelectorAll('.q[data-answer]')],practice=[...document.querySelectorAll('.practice-q')],quiz=[...document.querySelectorAll('.quiz-q')],answers={};let moodSaved=false,themeSaved=false,paraSaved=false;
+function progress(){const written=(moodSaved?1:0)+(themeSaved?1:0)+(paraSaved?1:0),pct=Math.round(((Object.keys(answers).length+written)/(all.length+3))*100);document.getElementById('progressBar').style.width=pct+'%';document.getElementById('progressText').textContent=pct+'%'}
+all.forEach(q=>{const key=q.dataset.answer,fb=q.querySelector('.feedback');q.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',()=>{if(answers[q.dataset.q])return;const pick=b.dataset.choice;answers[q.dataset.q]=pick;if(pick===key){b.classList.add('correct');fb.textContent='✅ Nice work! Keep connecting the skill to what the poem means.';fb.className='feedback show good'}else{b.classList.add('incorrect');q.querySelector(`[data-choice="${key}"]`).classList.add('correct');fb.textContent='💡 Recheck the poem and ask what the words help you understand, picture, hear, or feel.';fb.className='feedback show bad'}progress()}))});
+document.getElementById('saveMood').onclick=()=>{if(!moodStart.value||!moodEnd.value)return alert('Choose both mood words.');moodSaved=true;moodSavedEl=document.getElementById('moodSaved');moodSavedEl.classList.add('show');progress()};
+document.getElementById('saveTheme').onclick=()=>{if(!themeResponse.value.trim()||!themeEvidence.value.trim())return alert('Complete both theme boxes.');themeSaved=true;document.getElementById('themeSaved').classList.add('show');progress()};
+document.getElementById('savePara').onclick=()=>{if(!paraphrase.value.trim())return alert('Write your paraphrase.');paraSaved=true;document.getElementById('paraSaved').classList.add('show');progress()};
+function countCorrect(list){let n=0;list.forEach(q=>{if(answers[q.dataset.q]===q.dataset.answer)n++});return n}
+document.getElementById('finishBtn').onclick=()=>{const name=studentName.value.trim();if(Object.keys(answers).length<all.length)return alert('Complete all practice and quiz questions.');if(!moodSaved||!themeSaved||!paraSaved)return alert('Save the mood, theme/evidence, and paraphrase practice.');if(!name)return alert('Enter your name.');const pc=countCorrect(practice),qc=countCorrect(quiz),pct=Math.round(qc/quiz.length*100);scoreText.textContent=pct+'%';practiceMetric.textContent=`${pc}/${practice.length}`;quizMetric.textContent=`${qc}/${quiz.length}`;studentDisplay.textContent=name;reportMessage.textContent=pct>=90?'🏆 Poetry Power Master!':pct>=80?'🌟 Strong work!':pct>=70?'👍 Good progress. Review what you missed.':'🔁 Keep practicing: FIND IT → THINK ABOUT IT → CONNECT IT.';report.classList.add('show');report.scrollIntoView({behavior:'smooth'})};
+
+document.getElementById('downloadBtn').onclick=()=>{
+  if(!window.jspdf)return alert('PDF library could not load.');
+
+  const name=studentName.value.trim()||'Student';
+  const pc=countCorrect(practice);
+  const qc=countCorrect(quiz);
+  const pct=Math.round(qc/quiz.length*100);
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'pt',format:'letter'});
+  const left=42;
+  const right=42;
+  const w=doc.internal.pageSize.getWidth();
+  let y=46;
+
+  const makeRows=(list,prefix='')=>list.map(q=>{
+    const pick=answers[q.dataset.q];
+    const sel=q.querySelector(`[data-choice="${pick}"]`);
+    const corr=q.querySelector(`[data-choice="${q.dataset.answer}"]`);
+    return[
+      q.dataset.q.replace(prefix,''),
+      q.querySelector('h4').textContent.trim(),
+      sel?sel.textContent.trim():'',
+      corr.textContent.trim(),
+      pick===q.dataset.answer?'Correct':'Incorrect'
+    ];
+  });
+
+  const practiceRows=makeRows(practice,'p');
+  const quizRows=makeRows(quiz,'q');
+
+  doc.setFillColor(18,54,111);
+  doc.roundedRect(left,y,w-left-right,72,12,12,'F');
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(18);
+  doc.text('Florida Standards Sprints',left+20,y+30);
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(10.5);
+  doc.text('Learn it. Sprint it. Master it.',left+20,y+49);
+
+  y+=96;
+  doc.setTextColor(20,43,79);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(18);
+  doc.text('Poetry Power Lab — Completion Report',left,y);
+  y+=28;
+  doc.setFontSize(11);
+  doc.text(`Student: ${name}`,left,y);
+  doc.text(`Practice: ${pc}/${practice.length}`,left,y+18);
+  doc.text(`Final Quiz: ${qc}/${quiz.length} (${pct}%)`,left,y+36);
+  doc.text(`Completed: ${new Date().toLocaleString()}`,left,y+54);
+
+  y+=82;
+  doc.autoTable({
+    startY:y,
+    head:[['Written Skill','Student Work']],
+    body:[
+      ['Beginning mood',moodStart.value],
+      ['Ending mood',moodEnd.value],
+      ['Theme',themeResponse.value],
+      ['Theme evidence',themeEvidence.value],
+      ['Paraphrase',paraphrase.value]
+    ],
+    margin:{left,right},
+    theme:'grid',
+    styles:{fontSize:8.5,cellPadding:5,valign:'top'},
+    headStyles:{fillColor:[37,99,235],textColor:[255,255,255]}
+  });
+
+  doc.addPage();
+  doc.setTextColor(20,43,79);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(17);
+  doc.text('Independent Skill Practice',left,46);
+  doc.autoTable({
+    startY:60,
+    head:[['#','Question','Student Answer','Correct Answer','Result']],
+    body:practiceRows,
+    margin:{left,right,bottom:44},
+    theme:'grid',
+    styles:{fontSize:7.1,cellPadding:4,valign:'top',overflow:'linebreak'},
+    headStyles:{fillColor:[53,196,201],textColor:[255,255,255]},
+    columnStyles:{
+      0:{cellWidth:24},
+      1:{cellWidth:160},
+      2:{cellWidth:112},
+      3:{cellWidth:112},
+      4:{cellWidth:58}
+    }
+  });
+
+  doc.addPage();
+  doc.setTextColor(20,43,79);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(17);
+  doc.text('10-Question Mastery Sprint',left,46);
+  doc.autoTable({
+    startY:60,
+    head:[['#','Question','Student Answer','Correct Answer','Result']],
+    body:quizRows,
+    margin:{left,right,bottom:44},
+    theme:'grid',
+    styles:{fontSize:7.1,cellPadding:4,valign:'top',overflow:'linebreak'},
+    headStyles:{fillColor:[37,99,235],textColor:[255,255,255]},
+    columnStyles:{
+      0:{cellWidth:24},
+      1:{cellWidth:160},
+      2:{cellWidth:112},
+      3:{cellWidth:112},
+      4:{cellWidth:58}
+    },
+    didParseCell:function(data){
+      if(data.section==='body'&&data.column.index===4){
+        if(data.cell.raw==='Correct'){
+          data.cell.styles.textColor=[19,121,91];
+          data.cell.styles.fontStyle='bold';
+        }else{
+          data.cell.styles.textColor=[180,35,24];
+          data.cell.styles.fontStyle='bold';
+        }
+      }
+    }
+  });
+
+  const safe=name.replace(/[^a-z0-9]+/gi,'-')||'student';
+  doc.save(`${safe}-poetry-power-tutorial.pdf`);
+};
+
+progress();
+</script>
+</body>
+</html>
